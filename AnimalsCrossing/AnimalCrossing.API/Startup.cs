@@ -1,6 +1,8 @@
+using AnimalCrossing.DAL;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,6 +28,10 @@ namespace AnimalCrossing.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            var ConnectionString = Configuration["ConnectionString:AppDbConnectionString"];
+            services.AddDbContext<AnimalDBContext>(o => o.UseSqlServer(ConnectionString));
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
