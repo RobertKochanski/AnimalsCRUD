@@ -1,4 +1,6 @@
 using AnimalCrossing.DAL;
+using AnimalCrossing.DAL.Repositories;
+using AnimalCrossing.DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +33,8 @@ namespace AnimalCrossing.API
 
             var ConnectionString = Configuration["ConnectionString:AppDbConnectionString"];
             services.AddDbContext<AnimalDBContext>(o => o.UseSqlServer(ConnectionString));
+
+            services.AddTransient<IAnimalRepository, AnimalRepository>();
 
             services.AddSwaggerGen(c =>
             {
