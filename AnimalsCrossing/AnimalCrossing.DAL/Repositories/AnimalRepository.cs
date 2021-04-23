@@ -1,5 +1,7 @@
 ﻿using AnimalCrossing.DAL.Entities;
 using AnimalCrossing.DAL.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace AnimalCrossing.DAL.Repositories
@@ -13,10 +15,15 @@ namespace AnimalCrossing.DAL.Repositories
             _context = context;
         }
 
-        public async Task Add(Animal animal)
+        public async Task AddAsync(Animal animal)
         {
             await _context.Animals.AddAsync(animal);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<Animal>> GetAllAsync()
+        {
+            return await _context.Animals.ToListAsync();
         }
     }
 }

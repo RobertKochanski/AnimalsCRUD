@@ -2,6 +2,7 @@
 using AnimalCrossing.DAL.Entities;
 using AnimalCrossing.DAL.Repositories.Interfaces;
 using AnimalCrossing.Services.Services.Interfaces;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace AnimalCrossing.Services.Services
@@ -15,13 +16,18 @@ namespace AnimalCrossing.Services.Services
             _animalRepository = animalRepository;
         }
 
-        public async Task Add(CreateAnimalRequest request)
+        public async Task AddAsync(CreateAnimalRequest request)
         {
-            await _animalRepository.Add(new Animal()
+            await _animalRepository.AddAsync(new Animal()
             {
                 Name = request.Name,
                 Age = request.Age
             });
+        }
+
+        public async Task<List<Animal>> GetAllAsync()
+        {
+            return await _animalRepository.GetAllAsync();
         }
     }
 }

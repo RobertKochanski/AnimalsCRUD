@@ -19,9 +19,15 @@ namespace AnimalCrossing.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateAnimalRequest request)
         {
-            await _animalService.Add(request);
+            await _animalService.AddAsync(request);
             
             return Ok();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            return Ok(await _animalService.GetAllAsync());
         }
     }
 }
