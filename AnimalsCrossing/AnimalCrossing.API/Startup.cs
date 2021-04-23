@@ -3,6 +3,7 @@ using AnimalCrossing.DAL.Repositories;
 using AnimalCrossing.DAL.Repositories.Interfaces;
 using AnimalCrossing.Services.Services;
 using AnimalCrossing.Services.Services.Interfaces;
+using CGRS.RestApi;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -60,6 +61,8 @@ namespace AnimalCrossing.API
             });
 
             app.UseRouting();
+
+            app.UseMiddleware(typeof(ExceptionHandlerMiddleware));
 
             app.UseAuthorization();
 
