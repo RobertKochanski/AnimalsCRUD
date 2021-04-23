@@ -1,19 +1,15 @@
 using AnimalCrossing.DAL;
 using AnimalCrossing.DAL.Repositories;
 using AnimalCrossing.DAL.Repositories.Interfaces;
+using AnimalCrossing.Services.Services;
+using AnimalCrossing.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AnimalCrossing.API
 {
@@ -35,6 +31,7 @@ namespace AnimalCrossing.API
             services.AddDbContext<AnimalDBContext>(o => o.UseSqlServer(ConnectionString));
 
             services.AddTransient<IAnimalRepository, AnimalRepository>();
+            services.AddTransient<IAnimalService, AnimalService>();
 
             services.AddSwaggerGen(c =>
             {

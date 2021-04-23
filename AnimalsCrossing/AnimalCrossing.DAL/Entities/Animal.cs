@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AnimalCrossing.DAL.Entities
+﻿namespace AnimalCrossing.DAL.Entities
 {
     public class Animal
     {

@@ -1,10 +1,6 @@
-﻿using AnimalCrossing.DAL.Entities;
-using AnimalCrossing.DAL.Repositories.Interfaces;
-using Microsoft.AspNetCore.Http;
+﻿using AnimalCrossing.API.RestModels.Animals;
+using AnimalCrossing.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace AnimalCrossing.API.Controllers
@@ -13,22 +9,18 @@ namespace AnimalCrossing.API.Controllers
     [ApiController]
     public class AnimalsController : ControllerBase
     {
-        private readonly IAnimalRepository _animalRepository;
+        private readonly IAnimalService _animalService;
 
-        public AnimalsController(IAnimalRepository animalRepository)
+        public AnimalsController(IAnimalService animalService)
         {
-            _animalRepository = animalRepository;
+            _animalService = animalService;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create([FromBody] CreateAnimalRequest request)
         {
-            await _animalRepository.Add(new Animal()
-            {
-                Name = "Lucky",
-                Age = 4
-
-            });
+            await _animalService.Add(request);
+            
             return Ok();
         }
     }
