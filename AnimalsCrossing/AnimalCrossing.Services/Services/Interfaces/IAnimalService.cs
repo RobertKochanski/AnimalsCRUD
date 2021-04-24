@@ -10,5 +10,7 @@ namespace AnimalCrossing.Services.Services.Interfaces
         Task AddAsync(CreateAnimalRequest request);
 
         Task<List<Animal>> GetAllAsync();
+
+        Task<Animal> GetById(int id);
     }
 }

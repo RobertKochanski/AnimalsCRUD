@@ -9,5 +9,7 @@ namespace AnimalCrossing.DAL.Repositories.Interfaces
         Task AddAsync(Animal animal);
 
         Task<List<Animal>> GetAllAsync();
+
+        Task<Animal> GetById(int id);
     }
 }

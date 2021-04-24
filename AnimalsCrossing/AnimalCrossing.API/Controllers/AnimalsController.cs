@@ -20,7 +20,7 @@ namespace AnimalCrossing.API.Controllers
         public async Task<IActionResult> Create([FromBody] CreateAnimalRequest request)
         {
             await _animalService.AddAsync(request);
-            
+
             return Ok();
         }
 
@@ -28,6 +28,12 @@ namespace AnimalCrossing.API.Controllers
         public async Task<IActionResult> GetAll()
         {
             return Ok(await _animalService.GetAllAsync());
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            return Ok(await _animalService.GetById(id));
         }
     }
 }

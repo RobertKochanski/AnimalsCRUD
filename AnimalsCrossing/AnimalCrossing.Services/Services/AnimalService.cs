@@ -40,5 +40,17 @@ namespace AnimalCrossing.Services.Services
         {
             return await _animalRepository.GetAllAsync();
         }
+
+        public async Task<Animal> GetById(int id)
+        {
+            Animal result = await _animalRepository.GetById(id);
+
+            if(result == null)
+            {
+                throw new NotFoundException();
+            }
+
+            return result;
+        }
     }
 }
