@@ -1,4 +1,6 @@
-﻿namespace AnimalCrossing.DAL.Entities
+﻿using System;
+
+namespace AnimalCrossing.DAL.Entities
 {
     public class Animal
     {

@@ -35,5 +35,13 @@ namespace AnimalCrossing.API.Controllers
         {
             return Ok(await _animalService.GetById(id));
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Remove(int id)
+        {
+            await _animalService.Remove(id);
+
+            return Ok();
+        }
     }
 }

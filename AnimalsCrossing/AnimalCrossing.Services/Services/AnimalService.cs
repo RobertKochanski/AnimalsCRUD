@@ -52,5 +52,17 @@ namespace AnimalCrossing.Services.Services
 
             return result;
         }
+
+        public async Task Remove(int id)
+        {
+            Animal result = await _animalRepository.GetById(id);
+
+            if(result == null)
+            {
+                throw new BadRequestException("Nie istnieje zwierzę o tym id.");
+            }
+
+            _animalRepository.Remove(result);
+        }
     }
 }
