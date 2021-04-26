@@ -1,7 +1,7 @@
-﻿using AnimalCrossing.API.RestModels.Animals;
-using AnimalCrossing.DAL.Entities;
+﻿using AnimalCrossing.DAL.Entities;
 using AnimalCrossing.DAL.Repositories.Interfaces;
 using AnimalCrossing.Services.Exceptions;
+using AnimalCrossing.Services.RestModels.Animals;
 using AnimalCrossing.Services.Services.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -34,6 +34,31 @@ namespace AnimalCrossing.Services.Services
                 Name = request.Name,
                 Age = request.Age
             });
+        }
+
+        public async Task EditAsync(UpdateAnimalRequest request)
+        {
+            Animal animalFromDb = await _animalRepository.GetById(request.Id);
+
+            if (animalFromDb == null)
+            {
+                throw new BadRequestException("Nie istnieje zwierzę o tym id.");
+            }
+
+            if (string.IsNullOrEmpty(request.Name))
+            {
+                throw new BadRequestException("Imię nie może być puste.");
+            }
+
+            if (request.Age < 0)
+            {
+                throw new BadRequestException("Wiek zwierzęcia nie może być ujemny.");
+            }
+
+            animalFromDb.Name = request.Name;
+            animalFromDb.Age = request.Age;
+
+            await _animalRepository.SaveChangesAsync();
         }
 
         public async Task<List<Animal>> GetAllAsync()

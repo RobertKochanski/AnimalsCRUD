@@ -1,4 +1,4 @@
-﻿namespace AnimalCrossing.API.RestModels.Animals
+﻿namespace AnimalCrossing.Services.RestModels.Animals
 {
     public class CreateAnimalRequest
     {

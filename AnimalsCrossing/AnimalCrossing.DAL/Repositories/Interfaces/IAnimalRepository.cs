@@ -13,5 +13,7 @@ namespace AnimalCrossing.DAL.Repositories.Interfaces
         Task<Animal> GetById(int id);
 
         void Remove(Animal animal);
+
+        Task SaveChangesAsync();
     }
 }

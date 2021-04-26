@@ -1,4 +1,4 @@
-﻿using AnimalCrossing.API.RestModels.Animals;
+﻿using AnimalCrossing.Services.RestModels.Animals;
 using AnimalCrossing.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -40,6 +40,14 @@ namespace AnimalCrossing.API.Controllers
         public async Task<IActionResult> Remove(int id)
         {
             await _animalService.Remove(id);
+
+            return Ok();
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Edit([FromBody] UpdateAnimalRequest request)
+        {
+            await _animalService.EditAsync(request);
 
             return Ok();
         }
