@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 
 namespace AnimalCrossing.API.Controllers
 {
-    //test
     [Route("api/[controller]")]
     [ApiController]
     public class AnimalsController : ControllerBase
