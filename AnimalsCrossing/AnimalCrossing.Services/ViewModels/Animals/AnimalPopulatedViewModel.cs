@@ -13,6 +13,6 @@ namespace AnimalCrossing.Services.ViewModels.Animals
 
         public int Age { get; set; }
 
-        public virtual SpeciesViewModel Species { get; set; }
+        public virtual SpeciesViewModel SpeciesViewModel { get; set; }
     }
 }
