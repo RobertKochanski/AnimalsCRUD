@@ -3,6 +3,7 @@ using AnimalCrossing.DAL.Repositories;
 using AnimalCrossing.DAL.Repositories.Interfaces;
 using AnimalCrossing.Services.Services;
 using AnimalCrossing.Services.Services.Interfaces;
+using AutoMapper;
 using CGRS.RestApi;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,6 +36,14 @@ namespace AnimalCrossing.API
             services.AddTransient<IAnimalService, AnimalService>();
             services.AddTransient<ISpeciesRepository, SpeciesRepository>();
             services.AddTransient<ISpeciesService, SpeciesService>();
+
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            });
+
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
 
             services.AddSwaggerGen(c =>
             {

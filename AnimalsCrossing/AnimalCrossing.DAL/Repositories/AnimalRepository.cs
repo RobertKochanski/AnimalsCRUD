@@ -27,6 +27,11 @@ namespace AnimalCrossing.DAL.Repositories
             return await _context.Animals.ToListAsync();
         }
 
+        public async Task<List<Animal>> GetAllPopulatedAsync()
+        {
+            return await _context.Animals.Include(a => a.Species).ToListAsync();
+        }
+
         public async Task<Animal> GetById(int id)
         {
             return await _context.Animals.Where(x => x.Id == id).FirstOrDefaultAsync();

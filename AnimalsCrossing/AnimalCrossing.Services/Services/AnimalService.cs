@@ -3,6 +3,8 @@ using AnimalCrossing.DAL.Repositories.Interfaces;
 using AnimalCrossing.Services.Exceptions;
 using AnimalCrossing.Services.RestModels.Animals;
 using AnimalCrossing.Services.Services.Interfaces;
+using AnimalCrossing.Services.ViewModels.Animals;
+using AutoMapper;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -12,11 +14,13 @@ namespace AnimalCrossing.Services.Services
     {
         private readonly IAnimalRepository _animalRepository;
         private readonly ISpeciesRepository _speciesRepository;
+        private readonly IMapper _mapper;
 
-        public AnimalService(IAnimalRepository animalRepository, ISpeciesRepository speciesRepository)
+        public AnimalService(IAnimalRepository animalRepository, ISpeciesRepository speciesRepository, IMapper mapper)
         {
             _animalRepository = animalRepository;
             _speciesRepository = speciesRepository;
+            _mapper = mapper;
         }
 
         public async Task AddAsync(CreateAnimalRequest request)
@@ -75,9 +79,18 @@ namespace AnimalCrossing.Services.Services
             await _animalRepository.SaveChangesAsync();
         }
 
-        public async Task<List<Animal>> GetAllAsync()
+        public async Task<List<AnimalViewModel>> GetAllAsync()
         {
-            return await _animalRepository.GetAllAsync();
+            var animalsFromDb = await _animalRepository.GetAllAsync();
+
+            return _mapper.Map<List<AnimalViewModel>>(animalsFromDb);
+        }
+
+        public async Task<List<AnimalPopulatedViewModel>> GetAllPopulatedAsync()
+        {
+            var animalsFromDb = await _animalRepository.GetAllPopulatedAsync();
+
+            return _mapper.Map<List<AnimalPopulatedViewModel>>(animalsFromDb);
         }
 
         public async Task<Animal> GetById(int id)

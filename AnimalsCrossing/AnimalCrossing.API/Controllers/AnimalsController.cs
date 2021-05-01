@@ -30,6 +30,12 @@ namespace AnimalCrossing.API.Controllers
             return Ok(await _animalService.GetAllAsync());
         }
 
+        [HttpGet("Populated")]
+        public async Task<IActionResult> GetAllPopulated()
+        {
+            return Ok(await _animalService.GetAllPopulatedAsync());
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
