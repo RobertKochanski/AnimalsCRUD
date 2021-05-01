@@ -9,5 +9,9 @@ namespace AnimalCrossing.DAL.Entities
         public string Name { get; set; }
 
         public int Age { get; set; }
+
+        public int SpeciesId { get; set; }
+
+        public virtual Species Species { get; set; }
     }
 }
