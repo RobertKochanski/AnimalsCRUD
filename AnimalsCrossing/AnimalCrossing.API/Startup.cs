@@ -33,6 +33,8 @@ namespace AnimalCrossing.API
 
             services.AddTransient<IAnimalRepository, AnimalRepository>();
             services.AddTransient<IAnimalService, AnimalService>();
+            services.AddTransient<ISpeciesRepository, SpeciesRepository>();
+            services.AddTransient<ISpeciesService, SpeciesService>();
 
             services.AddSwaggerGen(c =>
             {

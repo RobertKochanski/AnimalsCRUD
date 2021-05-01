@@ -11,10 +11,12 @@ namespace AnimalCrossing.Services.Services
     public class AnimalService : IAnimalService
     {
         private readonly IAnimalRepository _animalRepository;
+        private readonly ISpeciesRepository _speciesRepository;
 
-        public AnimalService(IAnimalRepository animalRepository)
+        public AnimalService(IAnimalRepository animalRepository, ISpeciesRepository speciesRepository)
         {
             _animalRepository = animalRepository;
+            _speciesRepository = speciesRepository;
         }
 
         public async Task AddAsync(CreateAnimalRequest request)
@@ -24,15 +26,21 @@ namespace AnimalCrossing.Services.Services
                 throw new BadRequestException("Imię nie może być puste.");
             }
 
-            if(request.Age < 0)
+            if (request.Age < 0)
             {
                 throw new BadRequestException("Wiek zwierzęcia nie może być ujemny.");
+            }
+
+            if (await _speciesRepository.GetByIdAsync(request.SpeciesId) == null)
+            {
+                throw new BadRequestException("Dany gatunek nie istnieje");
             }
             
             await _animalRepository.AddAsync(new Animal()
             {
                 Name = request.Name,
-                Age = request.Age
+                Age = request.Age,
+                SpeciesId = request.SpeciesId
             });
         }
 
@@ -55,8 +63,14 @@ namespace AnimalCrossing.Services.Services
                 throw new BadRequestException("Wiek zwierzęcia nie może być ujemny.");
             }
 
+            if (await _speciesRepository.GetByIdAsync(request.SpeciesId) == null)
+            {
+                throw new BadRequestException("Dany gatunek nie istnieje");
+            }
+
             animalFromDb.Name = request.Name;
             animalFromDb.Age = request.Age;
+            animalFromDb.SpeciesId = request.SpeciesId;
 
             await _animalRepository.SaveChangesAsync();
         }
