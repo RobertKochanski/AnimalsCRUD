@@ -9,5 +9,7 @@ namespace AnimalCrossing.DAL.Repositories.Interfaces
     public interface IUserRepository
     {
         Task AddAsync(User user);
+
+        Task<List<User>> GetAllAsync();
     }
 }

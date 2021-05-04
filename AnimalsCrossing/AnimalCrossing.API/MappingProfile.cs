@@ -1,6 +1,7 @@
 ﻿using AnimalCrossing.DAL.Entities;
 using AnimalCrossing.Services.ViewModels.Animals;
 using AnimalCrossing.Services.ViewModels.Species;
+using AnimalCrossing.Services.ViewModels.User;
 using AutoMapper;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,7 @@ namespace AnimalCrossing.API
 
             CreateMap<Species, SpeciesViewModel>();
 
+            CreateMap<User, UserViewModel>();
         }
     }
 }

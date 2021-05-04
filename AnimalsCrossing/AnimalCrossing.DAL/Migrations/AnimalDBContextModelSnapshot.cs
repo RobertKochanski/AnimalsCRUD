@@ -81,7 +81,7 @@ namespace AnimalCrossing.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("AnimalCrossing.DAL.Entities.Animal", b =>

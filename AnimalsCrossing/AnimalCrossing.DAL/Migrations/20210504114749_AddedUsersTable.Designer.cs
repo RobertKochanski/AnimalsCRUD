@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AnimalCrossing.DAL.Migrations
 {
     [DbContext(typeof(AnimalDBContext))]
-    [Migration("20210504100856_AddedUserTable")]
-    partial class AddedUserTable
+    [Migration("20210504114749_AddedUsersTable")]
+    partial class AddedUsersTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -83,7 +83,7 @@ namespace AnimalCrossing.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("AnimalCrossing.DAL.Entities.Animal", b =>
