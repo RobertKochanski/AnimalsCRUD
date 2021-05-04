@@ -29,7 +29,10 @@ namespace AnimalCrossing.DAL.Repositories
 
         public async Task<List<Animal>> GetAllPopulatedAsync()
         {
-            return await _context.Animals.Include(a => a.Species).ToListAsync();
+            return await _context.Animals
+                .Include(a => a.Species)
+                .Include(b => b.Owner)
+                .ToListAsync();
         }
 
         public async Task<Animal> GetById(int id)

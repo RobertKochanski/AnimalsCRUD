@@ -17,7 +17,8 @@ namespace AnimalCrossing.API
             CreateMap<Animal, AnimalViewModel>();
 
             CreateMap<Animal, AnimalPopulatedViewModel>()
-                .ForMember(a => a.SpeciesViewModel, opt => opt.MapFrom(s => s.Species));
+                .ForMember(a => a.SpeciesViewModel, opt => opt.MapFrom(s => s.Species))
+                .ForMember(a => a.UserViewModel, opt => opt.MapFrom(s => s.Owner));
 
             CreateMap<Species, SpeciesViewModel>();
 
