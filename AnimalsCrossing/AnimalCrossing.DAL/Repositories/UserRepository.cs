@@ -29,7 +29,7 @@ namespace AnimalCrossing.DAL.Repositories
             return await _context.Users.ToListAsync();
         }
 
-        public async Task<User> GetById(int id)
+        public async Task<User> GetByIdAsync(int id)
         {
             return await _context.Users.Where(x => x.Id == id).FirstOrDefaultAsync();
         }

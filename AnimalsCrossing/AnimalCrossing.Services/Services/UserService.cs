@@ -54,7 +54,7 @@ namespace AnimalCrossing.Services.Services
 
         public async Task<User> GetById(int id)
         {
-            User result = await _userRepository.GetById(id);
+            User result = await _userRepository.GetByIdAsync(id);
 
             if (result == null)
             {

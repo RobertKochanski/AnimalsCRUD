@@ -14,12 +14,14 @@ namespace AnimalCrossing.Services.Services
     {
         private readonly IAnimalRepository _animalRepository;
         private readonly ISpeciesRepository _speciesRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public AnimalService(IAnimalRepository animalRepository, ISpeciesRepository speciesRepository, IMapper mapper)
+        public AnimalService(IAnimalRepository animalRepository, ISpeciesRepository speciesRepository, IMapper mapper, IUserRepository userRepository)
         {
             _animalRepository = animalRepository;
             _speciesRepository = speciesRepository;
+            _userRepository = userRepository;
             _mapper = mapper;
         }
 
@@ -39,12 +41,18 @@ namespace AnimalCrossing.Services.Services
             {
                 throw new BadRequestException("Dany gatunek nie istnieje");
             }
-            
+
+            if (await _userRepository.GetByIdAsync(request.OwnerId) == null)
+            {
+                throw new BadRequestException("Dany właściciel nie istnieje");
+            }
+
             await _animalRepository.AddAsync(new Animal()
             {
                 Name = request.Name,
                 Age = request.Age,
-                SpeciesId = request.SpeciesId
+                SpeciesId = request.SpeciesId,
+                OwnerId = request.OwnerId
             });
         }
 
@@ -72,9 +80,15 @@ namespace AnimalCrossing.Services.Services
                 throw new BadRequestException("Dany gatunek nie istnieje");
             }
 
+            if (await _speciesRepository.GetByIdAsync(request.SpeciesId) == null)
+            {
+                throw new BadRequestException("Dany właściciel nie istnieje");
+            }
+
             animalFromDb.Name = request.Name;
             animalFromDb.Age = request.Age;
             animalFromDb.SpeciesId = request.SpeciesId;
+            animalFromDb.OwnerId = request.OwnerId;
 
             await _animalRepository.SaveChangesAsync();
         }

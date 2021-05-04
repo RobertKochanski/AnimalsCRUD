@@ -12,6 +12,6 @@ namespace AnimalCrossing.DAL.Repositories.Interfaces
 
         Task<List<User>> GetAllAsync();
 
-        Task<User> GetById(int id);
+        Task<User> GetByIdAsync(int id);
     }
 }

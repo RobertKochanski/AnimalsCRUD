@@ -13,5 +13,9 @@ namespace AnimalCrossing.DAL.Entities
         public int SpeciesId { get; set; }
 
         public virtual Species Species { get; set; }
+
+        public int OwnerId { get; set; }
+
+        public virtual User Owner { get; set; }
     }
 }

@@ -9,5 +9,7 @@
         public int Age { get; set; }
 
         public int SpeciesId { get; set; }
+
+        public int OwnerId { get; set; }
     }
 }
