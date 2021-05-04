@@ -9,6 +9,8 @@ namespace AnimalCrossing.DAL
 
         public DbSet<Species> Species { get; set; }
 
+        public DbSet<User> User { get; set; }
+
         public AnimalDBContext(DbContextOptions<AnimalDBContext> options) : base(options)
         {
 

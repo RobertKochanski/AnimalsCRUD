@@ -36,6 +36,8 @@ namespace AnimalCrossing.API
             services.AddTransient<IAnimalService, AnimalService>();
             services.AddTransient<ISpeciesRepository, SpeciesRepository>();
             services.AddTransient<ISpeciesService, SpeciesService>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IUserService, UserService>();
 
             var mapperConfig = new MapperConfiguration(mc =>
             {
