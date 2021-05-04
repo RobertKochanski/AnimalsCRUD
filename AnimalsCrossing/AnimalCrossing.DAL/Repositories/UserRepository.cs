@@ -3,6 +3,7 @@ using AnimalCrossing.DAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,6 +27,11 @@ namespace AnimalCrossing.DAL.Repositories
         public async Task<List<User>> GetAllAsync()
         {
             return await _context.Users.ToListAsync();
+        }
+
+        public async Task<User> GetById(int id)
+        {
+            return await _context.Users.Where(x => x.Id == id).FirstOrDefaultAsync();
         }
     }
 }

@@ -51,5 +51,17 @@ namespace AnimalCrossing.Services.Services
 
             return _mapper.Map<List<UserViewModel>>(animalsFromDb);
         }
+
+        public async Task<User> GetById(int id)
+        {
+            User result = await _userRepository.GetById(id);
+
+            if (result == null)
+            {
+                throw new NotFoundException();
+            }
+
+            return result;
+        }
     }
 }

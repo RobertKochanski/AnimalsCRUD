@@ -32,5 +32,11 @@ namespace AnimalCrossing.API.Controllers
         {
             return Ok(await _userService.GetAllAsync());
         }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            return Ok(await _userService.GetById(id));
+        }
     }
 }

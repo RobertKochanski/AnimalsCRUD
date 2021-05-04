@@ -1,4 +1,5 @@
-﻿using AnimalCrossing.Services.RestModels.Users;
+﻿using AnimalCrossing.DAL.Entities;
+using AnimalCrossing.Services.RestModels.Users;
 using AnimalCrossing.Services.ViewModels.User;
 using System;
 using System.Collections.Generic;
@@ -12,5 +13,7 @@ namespace AnimalCrossing.Services.Services.Interfaces
         Task AddAsync(CreateUserRequest request);
 
         Task<List<UserViewModel>> GetAllAsync();
+
+        Task<User> GetById(int id);
     }
 }
