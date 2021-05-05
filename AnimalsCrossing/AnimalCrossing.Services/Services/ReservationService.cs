@@ -3,6 +3,7 @@ using AnimalCrossing.DAL.Repositories.Interfaces;
 using AnimalCrossing.Services.Exceptions;
 using AnimalCrossing.Services.RestModels.Reservations;
 using AnimalCrossing.Services.Services.Interfaces;
+using AnimalCrossing.Services.ViewModels.Reservation;
 using AutoMapper;
 using System;
 using System.Collections.Generic;
@@ -46,6 +47,13 @@ namespace AnimalCrossing.Services.Services
                 comments = request.comments,
                 cost = request.cost
             });
+        }
+
+        public async Task<List<ReservationViewModel>> GetAllAsync()
+        {
+            var animalsFromDb = await _reservationRepository.GetAllAsync();
+
+            return _mapper.Map<List<ReservationViewModel>>(animalsFromDb);
         }
     }
 }

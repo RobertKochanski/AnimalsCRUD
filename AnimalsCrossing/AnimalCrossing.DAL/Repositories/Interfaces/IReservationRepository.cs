@@ -9,5 +9,7 @@ namespace AnimalCrossing.DAL.Repositories.Interfaces
     public interface IReservationRepository
     {
         Task AddAsync(Reservation reservation);
+
+        Task<List<Reservation>> GetAllAsync();
     }
 }

@@ -26,5 +26,11 @@ namespace AnimalCrossing.API.Controllers
 
             return Ok();
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            return Ok(await _reservationService.GetAllAsync());
+        }
     }
 }

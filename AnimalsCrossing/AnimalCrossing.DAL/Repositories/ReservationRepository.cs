@@ -1,5 +1,6 @@
 ﻿using AnimalCrossing.DAL.Entities;
 using AnimalCrossing.DAL.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,6 +21,11 @@ namespace AnimalCrossing.DAL.Repositories
         {
             await _context.Reservations.AddAsync(reservation);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<Reservation>> GetAllAsync()
+        {
+            return await _context.Reservations.ToListAsync();
         }
     }
 }
