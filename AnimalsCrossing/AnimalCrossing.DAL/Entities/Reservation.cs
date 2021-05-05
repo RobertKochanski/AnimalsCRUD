@@ -8,20 +8,20 @@ namespace AnimalCrossing.DAL.Entities
     {
         public int Id { get; set; }
 
-        public DateTime startDate { get; set; }
+        public DateTime StartDate { get; set; }
 
-        public DateTime endDate { get; set; }
+        public DateTime EndDate { get; set; }
 
-        public int userId { get; set; }
+        public int UserId { get; set; }
 
-        public virtual User user { get; set; }
+        public virtual User User { get; set; }
 
-        public int animalId { get; set; }
+        public int AnimalId { get; set; }
 
-        public virtual Animal animal { get; set; }
+        public virtual Animal Animal { get; set; }
 
-        public string comments { get; set; }
+        public string Comments { get; set; }
 
-        public double cost { get; set; }
+        public double Cost { get; set; }
     }
 }

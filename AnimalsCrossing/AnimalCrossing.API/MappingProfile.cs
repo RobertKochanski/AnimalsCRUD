@@ -26,8 +26,8 @@ namespace AnimalCrossing.API
             CreateMap<User, UserViewModel>();
 
             CreateMap<Reservation, ReservationViewModel>()
-                .ForMember(a => a.UserViewModel, opt => opt.MapFrom(s => s.user))
-                .ForMember(a => a.AnimalPopulatedViewModel, opt => opt.MapFrom(s => s.animal));
+                .ForMember(a => a.UserViewModel, opt => opt.MapFrom(s => s.User))
+                .ForMember(a => a.AnimalPopulatedViewModel, opt => opt.MapFrom(s => s.Animal));
         }
     }
 }
