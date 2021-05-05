@@ -28,24 +28,18 @@ namespace AnimalCrossing.Services.Services
         }
         public async Task AddAsync(CreateReservationRequest request)
         {
-            if (await _animalRepository.GetById(request.animalId) == null)
+            if (await _animalRepository.GetById(request.AnimalId) == null)
             {
                 throw new BadRequestException("Dane zwierzę nie istnieje");
             }
 
-            if (await _userRepository.GetByIdAsync(request.userId) == null)
-            {
-                throw new BadRequestException("Dany właściciel nie istnieje");
-            }
-
             await _reservationRepository.AddAsync(new Reservation()
             {
-                startDate = request.startDate,
-                endDate = request.endDate,
-                userId = request.userId,
-                animalId = request.animalId,
-                comments = request.comments,
-                cost = request.cost
+                StartDate = request.StartDate,
+                EndDate = request.EndDate,
+                AnimalId = request.AnimalId,
+                Comments = request.Comments,
+                Cost = request.Cost
             });
         }
 

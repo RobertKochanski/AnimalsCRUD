@@ -12,10 +12,6 @@ namespace AnimalCrossing.DAL.Entities
 
         public DateTime EndDate { get; set; }
 
-        public int UserId { get; set; }
-
-        public virtual User User { get; set; }
-
         public int AnimalId { get; set; }
 
         public virtual Animal Animal { get; set; }

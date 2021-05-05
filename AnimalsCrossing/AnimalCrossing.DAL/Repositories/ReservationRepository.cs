@@ -25,7 +25,12 @@ namespace AnimalCrossing.DAL.Repositories
 
         public async Task<List<Reservation>> GetAllAsync()
         {
-            return await _context.Reservations.ToListAsync();
+            return await _context.Reservations
+                .Include(a => a.Animal)
+                .ThenInclude(b => b.Owner)
+                .Include(a => a.Animal)
+                .ThenInclude(c => c.Species)
+                .ToListAsync();
         }
     }
 }
