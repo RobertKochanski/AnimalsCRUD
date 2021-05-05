@@ -11,6 +11,8 @@ namespace AnimalCrossing.DAL
 
         public DbSet<User> Users { get; set; }
 
+        public DbSet<Reservation> Reservations { get; set; }
+
         public AnimalDBContext(DbContextOptions<AnimalDBContext> options) : base(options)
         {
 
