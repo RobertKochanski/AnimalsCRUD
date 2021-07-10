@@ -1,8 +1,5 @@
 ﻿using AnimalCrossing.Services.ViewModels.Animals;
-using AnimalCrossing.Services.ViewModels.User;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AnimalCrossing.Services.ViewModels.Reservation
 {

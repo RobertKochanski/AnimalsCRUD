@@ -4,8 +4,6 @@ using AnimalCrossing.Services.Exceptions;
 using AnimalCrossing.Services.RestModels.Species;
 using AnimalCrossing.Services.Services.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AnimalCrossing.Services.Services

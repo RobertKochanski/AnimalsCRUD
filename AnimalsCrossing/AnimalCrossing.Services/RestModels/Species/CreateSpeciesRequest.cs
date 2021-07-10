@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AnimalCrossing.Services.RestModels.Species
+﻿namespace AnimalCrossing.Services.RestModels.Species
 {
     public class CreateSpeciesRequest
     {

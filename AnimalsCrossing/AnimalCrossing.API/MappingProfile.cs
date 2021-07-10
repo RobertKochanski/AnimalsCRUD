@@ -4,10 +4,6 @@ using AnimalCrossing.Services.ViewModels.Reservation;
 using AnimalCrossing.Services.ViewModels.Species;
 using AnimalCrossing.Services.ViewModels.User;
 using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AnimalCrossing.API
 {

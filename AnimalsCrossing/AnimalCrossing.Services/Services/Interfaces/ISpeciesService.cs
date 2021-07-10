@@ -1,8 +1,5 @@
 ﻿using AnimalCrossing.DAL.Entities;
 using AnimalCrossing.Services.RestModels.Species;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AnimalCrossing.Services.Services.Interfaces

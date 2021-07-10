@@ -1,9 +1,7 @@
 ﻿using AnimalCrossing.DAL.Entities;
 using AnimalCrossing.DAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AnimalCrossing.DAL.Repositories

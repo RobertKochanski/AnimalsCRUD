@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AnimalCrossing.Services.RestModels.Users
+﻿namespace AnimalCrossing.Services.RestModels.Users
 {
     public class CreateUserRequest
     {

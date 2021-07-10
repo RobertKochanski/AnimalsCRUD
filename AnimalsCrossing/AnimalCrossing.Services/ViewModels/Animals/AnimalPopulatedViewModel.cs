@@ -1,8 +1,5 @@
 ﻿using AnimalCrossing.Services.ViewModels.Species;
 using AnimalCrossing.Services.ViewModels.User;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AnimalCrossing.Services.ViewModels.Animals
 {

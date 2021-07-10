@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AnimalCrossing.Services.ViewModels.Animals
+﻿namespace AnimalCrossing.Services.ViewModels.Animals
 {
     public class AnimalViewModel
     {

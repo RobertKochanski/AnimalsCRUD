@@ -3,9 +3,6 @@ using AnimalCrossing.Services.RestModels.Users;
 using AnimalCrossing.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace AnimalCrossing.API.Controllers
@@ -50,14 +47,11 @@ namespace AnimalCrossing.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var currentUserId = int.Parse(User.Identity.Name);
-            if (id != currentUserId && !User.IsInRole(Role.Admin))
-                return Forbid();
+            //var currentUserId = int.Parse(User.Identity.Name);
+            //if (id != currentUserId && !User.IsInRole(Role.Admin))
+            //    return Forbid();
 
-            var user = _userService.GetById(id);
-
-            if (user == null)
-                return NotFound();
+            var user = await _userService.GetById(id, User);
 
             return Ok(user);
         }

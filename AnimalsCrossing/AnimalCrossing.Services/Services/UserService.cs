@@ -90,21 +90,26 @@ namespace AnimalCrossing.Services.Services
 
         public async Task<List<UserViewModel>> GetAllAsync()
         {
-            var animalsFromDb = await _userRepository.GetAllAsync();
+            var usersFromDb = await _userRepository.GetAllAsync();
 
-            return _mapper.Map<List<UserViewModel>>(animalsFromDb);
+            return _mapper.Map<List<UserViewModel>>(usersFromDb);
         }
 
-        public async Task<User> GetById(int id)
+        public async Task<UserViewModel> GetById(int id, ClaimsPrincipal claimsPrincipal)
         {
-            User result = await _userRepository.GetByIdAsync(id);
+            var currentUserId = int.Parse(claimsPrincipal.Identity.Name);
+            if (id != currentUserId && !claimsPrincipal.IsInRole(Role.Admin))
+                throw new BadRequestException("Brak dostępu.");
 
-            if (result == null)
+
+            User userFromDb = await _userRepository.GetByIdAsync(id);
+
+            if (userFromDb == null)
             {
                 throw new NotFoundException();
             }
 
-            return result;
+            return _mapper.Map<UserViewModel>(userFromDb);
         }
     }
 }

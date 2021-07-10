@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AnimalCrossing.Services.ViewModels.User
 {
@@ -12,7 +10,7 @@ namespace AnimalCrossing.Services.ViewModels.User
 
         public string Subname { get; set; }
 
-        public string Password { get; set; }
+        public string Username { get; set; }
 
         public bool IsActive { get; set; }
 
