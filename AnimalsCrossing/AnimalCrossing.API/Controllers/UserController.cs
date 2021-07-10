@@ -47,10 +47,6 @@ namespace AnimalCrossing.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            //var currentUserId = int.Parse(User.Identity.Name);
-            //if (id != currentUserId && !User.IsInRole(Role.Admin))
-            //    return Forbid();
-
             var user = await _userService.GetById(id, User);
 
             return Ok(user);

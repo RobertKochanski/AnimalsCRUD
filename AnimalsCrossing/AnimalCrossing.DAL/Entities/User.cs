@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace AnimalCrossing.DAL.Entities
 {
@@ -21,5 +22,7 @@ namespace AnimalCrossing.DAL.Entities
         public DateTime Created { get; set; }
 
         public string Role { get; set; }
+
+        public virtual ICollection<Animal> Animals { get; set; }
     }
 }

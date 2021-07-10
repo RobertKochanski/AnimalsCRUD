@@ -1,10 +1,12 @@
 ﻿using AnimalCrossing.Services.RestModels.Animals;
 using AnimalCrossing.Services.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace AnimalCrossing.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class AnimalsController : ControllerBase
@@ -19,7 +21,7 @@ namespace AnimalCrossing.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateAnimalRequest request)
         {
-            await _animalService.AddAsync(request);
+            await _animalService.AddAsync(request, User);
 
             return Ok();
         }

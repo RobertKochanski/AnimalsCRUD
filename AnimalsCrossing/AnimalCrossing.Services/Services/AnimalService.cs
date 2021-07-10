@@ -6,6 +6,7 @@ using AnimalCrossing.Services.Services.Interfaces;
 using AnimalCrossing.Services.ViewModels.Animals;
 using AutoMapper;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace AnimalCrossing.Services.Services
@@ -25,7 +26,7 @@ namespace AnimalCrossing.Services.Services
             _mapper = mapper;
         }
 
-        public async Task AddAsync(CreateAnimalRequest request)
+        public async Task AddAsync(CreateAnimalRequest request, ClaimsPrincipal claimsPrincipal)
         {
             if (string.IsNullOrEmpty(request.Name))
             {
@@ -42,7 +43,7 @@ namespace AnimalCrossing.Services.Services
                 throw new BadRequestException("Dany gatunek nie istnieje");
             }
 
-            if (await _userRepository.GetByIdAsync(request.OwnerId) == null)
+            if (await _userRepository.GetByIdAsync(int.Parse(claimsPrincipal.Identity.Name)) == null)
             {
                 throw new BadRequestException("Dany właściciel nie istnieje");
             }
@@ -52,7 +53,7 @@ namespace AnimalCrossing.Services.Services
                 Name = request.Name,
                 Age = request.Age,
                 SpeciesId = request.SpeciesId,
-                OwnerId = request.OwnerId
+                OwnerId = int.Parse(claimsPrincipal.Identity.Name)
             });
         }
 
