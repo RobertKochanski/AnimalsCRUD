@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AnimalCrossing.DAL.Migrations
 {
     [DbContext(typeof(AnimalDBContext))]
-    [Migration("20210504165056_AddedForeignKey")]
-    partial class AddedForeignKey
+    [Migration("20210709155018_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -49,6 +49,35 @@ namespace AnimalCrossing.DAL.Migrations
                     b.ToTable("Animals");
                 });
 
+            modelBuilder.Entity("AnimalCrossing.DAL.Entities.Reservation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AnimalId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Comments")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Cost")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AnimalId");
+
+                    b.ToTable("Reservations");
+                });
+
             modelBuilder.Entity("AnimalCrossing.DAL.Entities.Species", b =>
                 {
                     b.Property<int>("Id")
@@ -83,7 +112,13 @@ namespace AnimalCrossing.DAL.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Role")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Subname")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -102,6 +137,15 @@ namespace AnimalCrossing.DAL.Migrations
                     b.HasOne("AnimalCrossing.DAL.Entities.Species", "Species")
                         .WithMany("Animals")
                         .HasForeignKey("SpeciesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("AnimalCrossing.DAL.Entities.Reservation", b =>
+                {
+                    b.HasOne("AnimalCrossing.DAL.Entities.Animal", "Animal")
+                        .WithMany()
+                        .HasForeignKey("AnimalId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 
 using Newtonsoft.Json;
 
-namespace CGRS.RestApi
+namespace AnimalCrossing.API
 {
     public class ExceptionHandlerMiddleware
     {

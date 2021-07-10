@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace AnimalCrossing.Services.RestModels.Users
 {
-    public class CreateUserRequest
+    public class AuthenticateModel
     {
-        public string Name { get; set; }
-
-        public string Subname { get; set; }
-
+        [Required]
         public string Username { get; set; }
 
+        [Required]
         public string Password { get; set; }
     }
 }

@@ -5,8 +5,12 @@ using AnimalCrossing.Services.RestModels.Users;
 using AnimalCrossing.Services.Services.Interfaces;
 using AnimalCrossing.Services.ViewModels.User;
 using AutoMapper;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,11 +20,48 @@ namespace AnimalCrossing.Services.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
+        private readonly AppSettings _appSettings;
 
-        public UserService(IUserRepository userRepository, IMapper mapper)
+        public UserService(IUserRepository userRepository, IMapper mapper, IOptions<AppSettings> appSettings)
         {
             _userRepository = userRepository;
             _mapper = mapper;
+            _appSettings = appSettings.Value;
+        }
+
+        public async Task<LoggedInUserResponse> Authenticate(string username, string password)
+        {
+            var userFromDb = await _userRepository.GetByNameAsync(username);
+
+            // return null if user not found
+            if (userFromDb == null)
+                throw new BadRequestException("Błędny login lub hasło.");
+
+            // authentication successful so generate jwt token
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new Claim[]
+                {
+                    new Claim(ClaimTypes.Name, userFromDb.Id.ToString()),
+                    new Claim(ClaimTypes.Role, userFromDb.Role)
+                }),
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            var tokenString = tokenHandler.WriteToken(token);
+
+            LoggedInUserResponse loggedInUserResponse = new LoggedInUserResponse()
+            {
+                Id = userFromDb.Id,
+                Username = userFromDb.Username,
+                Role = userFromDb.Role,
+                Token = tokenString
+            };
+
+            return loggedInUserResponse;
         }
 
         public async Task AddAsync(CreateUserRequest request)
@@ -39,9 +80,11 @@ namespace AnimalCrossing.Services.Services
             {
                 Name = request.Name,
                 Subname = request.Subname,
+                Username = request.Username,
                 Password = request.Password,
                 IsActive = true,
-                Created = DateTime.Now
+                Created = DateTime.Now,
+                Role = Role.User
             });
         }
 

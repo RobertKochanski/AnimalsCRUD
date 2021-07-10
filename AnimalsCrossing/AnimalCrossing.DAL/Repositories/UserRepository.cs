@@ -33,5 +33,10 @@ namespace AnimalCrossing.DAL.Repositories
         {
             return await _context.Users.Where(x => x.Id == id).FirstOrDefaultAsync();
         }
+
+        public async Task<User> GetByNameAsync(string username)
+        {
+            return await _context.Users.Where(x => x.Username == username).FirstOrDefaultAsync();
+        }
     }
 }

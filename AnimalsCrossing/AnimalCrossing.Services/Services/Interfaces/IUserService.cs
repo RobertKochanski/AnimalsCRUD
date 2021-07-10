@@ -10,6 +10,8 @@ namespace AnimalCrossing.Services.Services.Interfaces
 {
     public interface IUserService
     {
+        Task<LoggedInUserResponse> Authenticate(string username, string password);
+
         Task AddAsync(CreateUserRequest request);
 
         Task<List<UserViewModel>> GetAllAsync();
