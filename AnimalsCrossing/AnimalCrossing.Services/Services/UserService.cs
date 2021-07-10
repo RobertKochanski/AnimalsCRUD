@@ -37,6 +37,9 @@ namespace AnimalCrossing.Services.Services
             if (userFromDb == null)
                 throw new BadRequestException("Błędny login lub hasło.");
 
+            if (!VerifyPasswordHash(password, userFromDb.PasswordHash, userFromDb.PasswordSalt))
+                throw new BadRequestException("Błędny login lub hasło.");
+
             // authentication successful so generate jwt token
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
@@ -76,12 +79,16 @@ namespace AnimalCrossing.Services.Services
                 throw new BadRequestException("Proszę podać hasło.");
             }
 
+            byte[] passwordHash, passwordSalt;
+            CreatePasswordHash(request.Password, out passwordHash, out passwordSalt);
+
             await _userRepository.AddAsync(new User()
             {
                 Name = request.Name,
                 Subname = request.Subname,
                 Username = request.Username,
-                Password = request.Password,
+                PasswordHash = passwordHash,
+                PasswordSalt = passwordSalt,
                 IsActive = true,
                 Created = DateTime.Now,
                 Role = Role.User
@@ -110,6 +117,37 @@ namespace AnimalCrossing.Services.Services
             }
 
             return _mapper.Map<UserViewModel>(userFromDb);
+        }
+
+        private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        {
+            if (password == null) throw new ArgumentNullException("password");
+            if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
+
+            using (var hmac = new System.Security.Cryptography.HMACSHA512())
+            {
+                passwordSalt = hmac.Key;
+                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            }
+        }
+
+        private static bool VerifyPasswordHash(string password, byte[] storedHash, byte[] storedSalt)
+        {
+            if (password == null) throw new ArgumentNullException("password");
+            if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
+            if (storedHash.Length != 64) throw new ArgumentException("Invalid length of password hash (64 bytes expected).", "passwordHash");
+            if (storedSalt.Length != 128) throw new ArgumentException("Invalid length of password salt (128 bytes expected).", "passwordHash");
+
+            using (var hmac = new System.Security.Cryptography.HMACSHA512(storedSalt))
+            {
+                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                for (int i = 0; i < computedHash.Length; i++)
+                {
+                    if (computedHash[i] != storedHash[i]) return false;
+                }
+            }
+
+            return true;
         }
     }
 }
