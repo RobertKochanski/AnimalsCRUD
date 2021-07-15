@@ -133,21 +133,39 @@ namespace AnimalCrossing.Services.Services
             }
 
             if (string.IsNullOrEmpty(request.Name) || string.IsNullOrEmpty(request.Subname)
-                || string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Password))
+                || string.IsNullOrEmpty(request.Username))
             {
                 throw new BadRequestException("Nie wprowadzono pełnych danych");
             }
 
-            byte[] passwordHash, passwordSalt;
-            CreatePasswordHash(request.Password, out passwordHash, out passwordSalt);
+            if (!string.IsNullOrEmpty(request.Password))
+            {
+                byte[] passwordHash, passwordSalt;
+                CreatePasswordHash(request.Password, out passwordHash, out passwordSalt);
 
+                userFromDb.PasswordHash = passwordHash;
+                userFromDb.PasswordSalt = passwordSalt;
+            }
+            
             userFromDb.Name = request.Name;
             userFromDb.Subname = request.Subname;
             userFromDb.Username = request.Username;
-            userFromDb.PasswordHash = passwordHash;
-            userFromDb.PasswordSalt = passwordSalt;
 
             await _userRepository.SaveChangesAsync();
+        }
+
+        public async Task<UserViewModel> GetMyInfo(ClaimsPrincipal user)
+        {
+            var currentUserId = int.Parse(user.Identity.Name);
+
+            User userFromDb = await _userRepository.GetByIdAsync(currentUserId);
+
+            if (userFromDb == null)
+            {
+                throw new NotFoundException();
+            }
+
+            return _mapper.Map<UserViewModel>(userFromDb);
         }
 
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)

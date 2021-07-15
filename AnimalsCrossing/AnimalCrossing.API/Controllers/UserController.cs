@@ -52,6 +52,14 @@ namespace AnimalCrossing.API.Controllers
             return Ok(user);
         }
 
+        [HttpGet("me")]
+        public async Task<IActionResult> GetMyInfo()
+        {
+            var user = await _userService.GetMyInfo(User);
+
+            return Ok(user);
+        }
+
         [HttpPut]
         public async Task<IActionResult> Edit([FromBody] UpdateUserRequest request)
         {
