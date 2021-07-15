@@ -13,5 +13,7 @@ namespace AnimalCrossing.DAL.Repositories.Interfaces
         Task<User> GetByIdAsync(int id);
 
         Task<User> GetByNameAsync(string username);
+
+        Task SaveChangesAsync();
     }
 }

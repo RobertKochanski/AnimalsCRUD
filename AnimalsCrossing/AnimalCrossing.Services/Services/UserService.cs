@@ -119,6 +119,37 @@ namespace AnimalCrossing.Services.Services
             return _mapper.Map<UserViewModel>(userFromDb);
         }
 
+        public async Task EditAsync(UpdateUserRequest request, ClaimsPrincipal claimsPrincipal)
+        {
+            var currentUserId = int.Parse(claimsPrincipal.Identity.Name);
+            if (request.Id != currentUserId && !claimsPrincipal.IsInRole(Role.Admin))
+                throw new BadRequestException("Brak dostępu.");
+
+            User userFromDb = await _userRepository.GetByIdAsync(request.Id);
+
+            if (userFromDb == null)
+            {
+                throw new BadRequestException("Nie istnieje użytkownik o tym id.");
+            }
+
+            if (string.IsNullOrEmpty(request.Name) || string.IsNullOrEmpty(request.Subname)
+                || string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Password))
+            {
+                throw new BadRequestException("Nie wprowadzono pełnych danych");
+            }
+
+            byte[] passwordHash, passwordSalt;
+            CreatePasswordHash(request.Password, out passwordHash, out passwordSalt);
+
+            userFromDb.Name = request.Name;
+            userFromDb.Subname = request.Subname;
+            userFromDb.Username = request.Username;
+            userFromDb.PasswordHash = passwordHash;
+            userFromDb.PasswordSalt = passwordSalt;
+
+            await _userRepository.SaveChangesAsync();
+        }
+
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             if (password == null) throw new ArgumentNullException("password");

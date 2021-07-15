@@ -15,5 +15,7 @@ namespace AnimalCrossing.Services.Services.Interfaces
         Task<List<UserViewModel>> GetAllAsync();
 
         Task<UserViewModel> GetById(int id, ClaimsPrincipal claimsPrincipal);
+
+        Task EditAsync(UpdateUserRequest request, ClaimsPrincipal claimsPrincipal);
     }
 }

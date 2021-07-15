@@ -51,5 +51,13 @@ namespace AnimalCrossing.API.Controllers
 
             return Ok(user);
         }
+
+        [HttpPut]
+        public async Task<IActionResult> Edit([FromBody] UpdateUserRequest request)
+        {
+            await _userService.EditAsync(request, User);
+
+            return Ok();
+        }
     }
 }
