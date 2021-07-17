@@ -7,14 +7,14 @@ namespace AnimalCrossing.Services.ViewModels.Reservation
     {
         public int Id { get; set; }
 
-        public DateTime startDate { get; set; }
+        public DateTime StartDate { get; set; }
 
-        public DateTime endDate { get; set; }
+        public DateTime EndDate { get; set; }
 
         public virtual AnimalPopulatedViewModel AnimalPopulatedViewModel { get; set; }
 
-        public string comments { get; set; }
+        public string Comments { get; set; }
 
-        public double cost { get; set; }
+        public double Cost { get; set; }
     }
 }

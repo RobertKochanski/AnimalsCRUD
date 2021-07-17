@@ -81,7 +81,7 @@ namespace AnimalCrossing.Services.Services
                 throw new BadRequestException("Dany gatunek nie istnieje");
             }
 
-            if (await _speciesRepository.GetByIdAsync(request.SpeciesId) == null)
+            if (await _userRepository.GetByIdAsync(request.OwnerId) == null)
             {
                 throw new BadRequestException("Dany właściciel nie istnieje");
             }

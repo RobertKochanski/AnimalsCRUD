@@ -37,6 +37,12 @@ namespace AnimalCrossing.DAL.Repositories
             return await _context.Users.Where(x => x.Username == username).FirstOrDefaultAsync();
         }
 
+        public void Remove(User user)
+        {
+            _context.Users.Remove(user);
+            _context.SaveChanges();
+        }
+
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();

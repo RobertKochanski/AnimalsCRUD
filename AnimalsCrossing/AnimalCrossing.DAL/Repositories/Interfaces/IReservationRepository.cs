@@ -9,5 +9,11 @@ namespace AnimalCrossing.DAL.Repositories.Interfaces
         Task AddAsync(Reservation reservation);
 
         Task<List<Reservation>> GetAllAsync();
+
+        Task<Reservation> GetById(int id);
+
+        void Remove(Reservation reservation);
+
+        Task SaveChangesAsync();
     }
 }

@@ -168,6 +168,16 @@ namespace AnimalCrossing.Services.Services
             return _mapper.Map<UserViewModel>(userFromDb);
         }
 
+        public async Task Remove(int id)
+        {
+            User user = await _userRepository.GetByIdAsync(id);
+
+            if (user == null)
+                throw new BadRequestException("Gatunek o tym Id nie istnieje.");
+
+            _userRepository.Remove(user);
+        }
+
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             if (password == null) throw new ArgumentNullException("password");

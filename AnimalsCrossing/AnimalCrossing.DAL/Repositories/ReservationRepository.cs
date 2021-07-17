@@ -2,6 +2,7 @@
 using AnimalCrossing.DAL.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AnimalCrossing.DAL.Repositories
@@ -29,6 +30,27 @@ namespace AnimalCrossing.DAL.Repositories
                 .Include(a => a.Animal)
                 .ThenInclude(c => c.Species)
                 .ToListAsync();
+        }
+
+        public async Task<Reservation> GetById(int id)
+        {
+            return await _context.Reservations
+                .Include(a => a.Animal)
+                .ThenInclude(b => b.Owner)
+                .Include(a => a.Animal)
+                .ThenInclude(c => c.Species)
+                .Where(x => x.Id == id).FirstOrDefaultAsync();
+        }
+
+        public void Remove(Reservation reservation)
+        {
+            _context.Reservations.Remove(reservation);
+            _context.SaveChanges();
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
         }
     }
 }

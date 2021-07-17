@@ -23,5 +23,33 @@ namespace AnimalCrossing.API.Controllers
 
             return Ok();
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            return Ok(await _speciesService.GetAllsync());
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            return Ok(await _speciesService.GetByIdAsync(id));
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Edit([FromBody] UpdateSpeciesRequest request)
+        {
+            await _speciesService.EditAsync(request);
+
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Remove(int id)
+        {
+            await _speciesService.Remove(id);
+
+            return Ok();
+        }
     }
 }

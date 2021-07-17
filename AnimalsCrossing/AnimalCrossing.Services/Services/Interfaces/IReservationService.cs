@@ -10,5 +10,11 @@ namespace AnimalCrossing.Services.Services.Interfaces
         Task AddAsync(CreateReservationRequest request);
 
         Task<List<ReservationViewModel>> GetAllAsync();
+
+        Task<ReservationViewModel> GetById(int id);
+
+        Task Remove(int id);
+
+        Task EditAsync(UpdateReservationRequest request);
     }
 }

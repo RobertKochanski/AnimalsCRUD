@@ -1,5 +1,6 @@
-﻿using AnimalCrossing.DAL.Entities;
-using AnimalCrossing.Services.RestModels.Species;
+﻿using AnimalCrossing.Services.RestModels.Species;
+using AnimalCrossing.Services.ViewModels.Species;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace AnimalCrossing.Services.Services.Interfaces
@@ -8,6 +9,12 @@ namespace AnimalCrossing.Services.Services.Interfaces
     {
         Task AddAsync(CreateSpeciesRequest request);
 
-        Task<Species> GetById(int id);
+        Task<List<SpeciesViewModel>> GetAllsync();
+
+        Task<SpeciesViewModel> GetByIdAsync(int id);
+
+        Task EditAsync(UpdateSpeciesRequest request);
+
+        Task Remove(int id);
     }
 }
