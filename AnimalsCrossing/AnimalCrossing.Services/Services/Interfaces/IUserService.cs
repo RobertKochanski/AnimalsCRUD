@@ -20,6 +20,6 @@ namespace AnimalCrossing.Services.Services.Interfaces
 
         Task<UserViewModel> GetMyInfo(ClaimsPrincipal user);
 
-        Task Remove(int id);
+        Task Remove(int id, ClaimsPrincipal claimsPrincipal);
     }
 }

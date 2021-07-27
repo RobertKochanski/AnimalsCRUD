@@ -40,6 +40,14 @@ namespace AnimalCrossing.DAL.Repositories
             return await _context.Animals.Where(x => x.Id == id).FirstOrDefaultAsync();
         }
 
+        public async Task<Animal> GetPopulatedByIdAsync(int id)
+        {
+            return await _context.Animals
+                .Include(a => a.Species)
+                .Include(b => b.Owner)
+                .Where(x => x.Id == id).FirstOrDefaultAsync();
+        }
+
         public void Remove(Animal animal)
         {
             _context.Animals.Remove(animal);

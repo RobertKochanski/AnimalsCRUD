@@ -17,5 +17,7 @@ namespace AnimalCrossing.DAL.Repositories.Interfaces
         Task SaveChangesAsync();
 
         Task<List<Animal>> GetAllPopulatedAsync();
+
+        Task<Animal> GetPopulatedByIdAsync(int id);
     }
 }

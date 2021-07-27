@@ -104,11 +104,6 @@ namespace AnimalCrossing.Services.Services
 
         public async Task<UserViewModel> GetById(int id, ClaimsPrincipal claimsPrincipal)
         {
-            var currentUserId = int.Parse(claimsPrincipal.Identity.Name);
-            if (id != currentUserId && !claimsPrincipal.IsInRole(Role.Admin))
-                throw new BadRequestException("Brak dostępu.");
-
-
             User userFromDb = await _userRepository.GetByIdAsync(id);
 
             if (userFromDb == null)
@@ -116,21 +111,25 @@ namespace AnimalCrossing.Services.Services
                 throw new NotFoundException();
             }
 
+            var currentUserId = int.Parse(claimsPrincipal.Identity.Name);
+            if (id != currentUserId && !claimsPrincipal.IsInRole(Role.Admin))
+                throw new BadRequestException("Brak dostępu.");
+
             return _mapper.Map<UserViewModel>(userFromDb);
         }
 
         public async Task EditAsync(UpdateUserRequest request, ClaimsPrincipal claimsPrincipal)
         {
-            var currentUserId = int.Parse(claimsPrincipal.Identity.Name);
-            if (request.Id != currentUserId && !claimsPrincipal.IsInRole(Role.Admin))
-                throw new BadRequestException("Brak dostępu.");
-
             User userFromDb = await _userRepository.GetByIdAsync(request.Id);
 
             if (userFromDb == null)
             {
                 throw new BadRequestException("Nie istnieje użytkownik o tym id.");
             }
+
+            var currentUserId = int.Parse(claimsPrincipal.Identity.Name);
+            if (request.Id != currentUserId && !claimsPrincipal.IsInRole(Role.Admin))
+                throw new BadRequestException("Brak dostępu.");
 
             if (string.IsNullOrEmpty(request.Name) || string.IsNullOrEmpty(request.Subname)
                 || string.IsNullOrEmpty(request.Username))
@@ -168,12 +167,16 @@ namespace AnimalCrossing.Services.Services
             return _mapper.Map<UserViewModel>(userFromDb);
         }
 
-        public async Task Remove(int id)
+        public async Task Remove(int id, ClaimsPrincipal claimsPrincipal)
         {
             User user = await _userRepository.GetByIdAsync(id);
 
             if (user == null)
-                throw new BadRequestException("Gatunek o tym Id nie istnieje.");
+                throw new BadRequestException("Użytkownik o tym Id nie istnieje.");
+
+            var currentUserId = int.Parse(claimsPrincipal.Identity.Name);
+            if (id != currentUserId && !claimsPrincipal.IsInRole(Role.Admin))
+                throw new BadRequestException("Brak dostępu.");
 
             _userRepository.Remove(user);
         }

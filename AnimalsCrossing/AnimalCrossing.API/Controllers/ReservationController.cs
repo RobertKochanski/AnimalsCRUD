@@ -1,4 +1,5 @@
-﻿using AnimalCrossing.Services.RestModels.Reservations;
+﻿using AnimalCrossing.DAL.Entities;
+using AnimalCrossing.Services.RestModels.Reservations;
 using AnimalCrossing.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -26,6 +27,7 @@ namespace AnimalCrossing.API.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = Role.Admin)]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -35,13 +37,13 @@ namespace AnimalCrossing.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            return Ok(await _reservationService.GetById(id));
+            return Ok(await _reservationService.GetById(id, User));
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Remove(int id)
         {
-            await _reservationService.Remove(id);
+            await _reservationService.Remove(id, User);
 
             return Ok();
         }
@@ -49,7 +51,7 @@ namespace AnimalCrossing.API.Controllers
         [HttpPut]
         public async Task<IActionResult> Edit([FromBody] UpdateReservationRequest request)
         {
-            await _reservationService.EditAsync(request);
+            await _reservationService.EditAsync(request, User);
 
             return Ok();
         }

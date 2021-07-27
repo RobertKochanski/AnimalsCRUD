@@ -71,7 +71,7 @@ namespace AnimalCrossing.API.Controllers
         [HttpDelete]
         public async Task<IActionResult> Remove(int id)
         {
-            await _userService.Remove(id);
+            await _userService.Remove(id, User);
 
             return Ok();
         }

@@ -6,6 +6,7 @@ using AnimalCrossing.Services.Services.Interfaces;
 using AnimalCrossing.Services.ViewModels.Reservation;
 using AutoMapper;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace AnimalCrossing.Services.Services
@@ -14,14 +15,12 @@ namespace AnimalCrossing.Services.Services
     {
         private readonly IReservationRepository _reservationRepository;
         private readonly IAnimalRepository _animalRepository;
-        private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public ReservationService(IReservationRepository reservationRepository, IAnimalRepository animalRepository, IMapper mapper, IUserRepository userRepository)
+        public ReservationService(IReservationRepository reservationRepository, IAnimalRepository animalRepository, IMapper mapper)
         {
             _reservationRepository = reservationRepository;
             _animalRepository = animalRepository;
-            _userRepository = userRepository;
             _mapper = mapper;
         }
         public async Task AddAsync(CreateReservationRequest request)
@@ -41,7 +40,7 @@ namespace AnimalCrossing.Services.Services
             });
         }
 
-        public async Task EditAsync(UpdateReservationRequest request)
+        public async Task EditAsync(UpdateReservationRequest request, ClaimsPrincipal claimsPrincipal)
         {
             Reservation reservationFromDb = await _reservationRepository.GetById(request.Id);
 
@@ -54,6 +53,10 @@ namespace AnimalCrossing.Services.Services
             {
                 throw new BadRequestException("Nie istnieje zwierzę o tym id.");
             }
+
+            var currentUserId = int.Parse(claimsPrincipal.Identity.Name);
+            if (reservationFromDb.Animal.OwnerId != currentUserId && !claimsPrincipal.IsInRole(Role.Admin))
+                throw new BadRequestException("Brak dostępu.");
 
             reservationFromDb.StartDate = request.StartDate;
             reservationFromDb.EndDate = request.EndDate;
@@ -76,24 +79,33 @@ namespace AnimalCrossing.Services.Services
             return _mapper.Map<List<ReservationViewModel>>(reservationsFromDb);
         }
 
-        public async Task<ReservationViewModel> GetById(int id)
+        public async Task<ReservationViewModel> GetById(int id, ClaimsPrincipal claimsPrincipal)
         {
             var reservationFromDb = await _reservationRepository.GetById(id);
-
+            
             if (reservationFromDb == null)
             {
                 throw new NotFoundException();
             }
 
+            var currentUserId = int.Parse(claimsPrincipal.Identity.Name);
+            if (reservationFromDb.Animal.OwnerId != currentUserId && !claimsPrincipal.IsInRole(Role.Admin))
+                throw new BadRequestException("Brak dostępu.");
+
+
             return _mapper.Map<ReservationViewModel>(reservationFromDb);
         }
 
-        public async Task Remove(int id)
+        public async Task Remove(int id, ClaimsPrincipal claimsPrincipal)
         {
             Reservation reservation = await _reservationRepository.GetById(id);
 
             if (reservation == null)
                 throw new BadRequestException("Rezerwacja o podanym Id nie istnieje.");
+
+            var currentUserId = int.Parse(claimsPrincipal.Identity.Name);
+            if (reservation.Animal.OwnerId != currentUserId && !claimsPrincipal.IsInRole(Role.Admin))
+                throw new BadRequestException("Brak dostępu.");
 
             _reservationRepository.Remove(reservation);
         }

@@ -13,12 +13,14 @@ namespace AnimalCrossing.Services.Services.Interfaces
 
         Task<List<AnimalViewModel>> GetAllAsync();
 
-        Task<Animal> GetById(int id);
-
-        Task Remove(int id);
-
-        Task EditAsync(UpdateAnimalRequest request);
+        Task<Animal> GetById(int id, ClaimsPrincipal claimsPrincipal);
 
         Task<List<AnimalPopulatedViewModel>> GetAllPopulatedAsync();
+
+        Task<AnimalPopulatedViewModel> GetPopulatedByIdAsync(int id, ClaimsPrincipal claimsPrincipal);
+
+        Task Remove(int id, ClaimsPrincipal claimsPrincipal);
+
+        Task EditAsync(UpdateAnimalRequest request, ClaimsPrincipal claimsPrincipal);
     }
 }

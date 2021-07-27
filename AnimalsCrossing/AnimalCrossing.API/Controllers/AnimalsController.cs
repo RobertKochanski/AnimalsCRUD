@@ -1,4 +1,5 @@
-﻿using AnimalCrossing.Services.RestModels.Animals;
+﻿using AnimalCrossing.DAL.Entities;
+using AnimalCrossing.Services.RestModels.Animals;
 using AnimalCrossing.Services.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -26,12 +27,14 @@ namespace AnimalCrossing.API.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = Role.Admin)]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             return Ok(await _animalService.GetAllAsync());
         }
 
+        [Authorize(Roles = Role.Admin)]
         [HttpGet("Populated")]
         public async Task<IActionResult> GetAllPopulated()
         {
@@ -41,13 +44,19 @@ namespace AnimalCrossing.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            return Ok(await _animalService.GetById(id));
+            return Ok(await _animalService.GetById(id, User));
+        }
+
+        [HttpGet("Populated/{id}")]
+        public async Task<IActionResult> GetPopulatedById(int id)
+        {
+            return Ok(await _animalService.GetPopulatedByIdAsync(id, User));
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Remove(int id)
         {
-            await _animalService.Remove(id);
+            await _animalService.Remove(id, User);
 
             return Ok();
         }
@@ -55,7 +64,7 @@ namespace AnimalCrossing.API.Controllers
         [HttpPut]
         public async Task<IActionResult> Edit([FromBody] UpdateAnimalRequest request)
         {
-            await _animalService.EditAsync(request);
+            await _animalService.EditAsync(request, User);
 
             return Ok();
         }

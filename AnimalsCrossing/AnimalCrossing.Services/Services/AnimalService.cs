@@ -57,7 +57,7 @@ namespace AnimalCrossing.Services.Services
             });
         }
 
-        public async Task EditAsync(UpdateAnimalRequest request)
+        public async Task EditAsync(UpdateAnimalRequest request, ClaimsPrincipal claimsPrincipal)
         {
             Animal animalFromDb = await _animalRepository.GetById(request.Id);
 
@@ -65,6 +65,10 @@ namespace AnimalCrossing.Services.Services
             {
                 throw new BadRequestException("Nie istnieje zwierzę o tym id.");
             }
+
+            var currentUserId = int.Parse(claimsPrincipal.Identity.Name);
+            if (request.OwnerId != currentUserId && !claimsPrincipal.IsInRole(Role.Admin))
+                throw new BadRequestException("Brak dostępu.");
 
             if (string.IsNullOrEmpty(request.Name))
             {
@@ -108,28 +112,52 @@ namespace AnimalCrossing.Services.Services
             return _mapper.Map<List<AnimalPopulatedViewModel>>(animalsFromDb);
         }
 
-        public async Task<Animal> GetById(int id)
+        public async Task<Animal> GetById(int id, ClaimsPrincipal claimsPrincipal)
         {
-            Animal result = await _animalRepository.GetById(id);
+            Animal animalFromDb = await _animalRepository.GetById(id);
 
-            if(result == null)
+            if(animalFromDb == null)
             {
                 throw new NotFoundException();
             }
 
-            return result;
+            var currentUserId = int.Parse(claimsPrincipal.Identity.Name);
+            if (animalFromDb.OwnerId != currentUserId && !claimsPrincipal.IsInRole(Role.Admin))
+                throw new BadRequestException("Brak dostępu.");
+
+            return animalFromDb;
         }
 
-        public async Task Remove(int id)
+        public async Task<AnimalPopulatedViewModel> GetPopulatedByIdAsync(int id, ClaimsPrincipal claimsPrincipal)
         {
-            Animal result = await _animalRepository.GetById(id);
+            var animalFromDb = await _animalRepository.GetPopulatedByIdAsync(id);
 
-            if(result == null)
+            if (animalFromDb == null)
+            {
+                throw new NotFoundException();
+            }
+
+            var currentUserId = int.Parse(claimsPrincipal.Identity.Name);
+            if (animalFromDb.OwnerId != currentUserId && !claimsPrincipal.IsInRole(Role.Admin))
+                throw new BadRequestException("Brak dostępu.");
+
+            return _mapper.Map<AnimalPopulatedViewModel>(animalFromDb);
+        }
+
+        public async Task Remove(int id, ClaimsPrincipal claimsPrincipal)
+        {
+            Animal animalFromDb = await _animalRepository.GetById(id);
+
+            if(animalFromDb == null)
             {
                 throw new BadRequestException("Nie istnieje zwierzę o tym id.");
             }
 
-            _animalRepository.Remove(result);
+            var currentUserId = int.Parse(claimsPrincipal.Identity.Name);
+            if (animalFromDb.OwnerId != currentUserId && !claimsPrincipal.IsInRole(Role.Admin))
+                throw new BadRequestException("Brak dostępu.");
+
+            _animalRepository.Remove(animalFromDb);
         }
     }
 }
